@@ -48,14 +48,28 @@ public class TaskController {
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
-    @Transactional
+    @PutMapping("/tasks/{id}")
+    ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate) {
+        if (!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        repository.findById(id)
+                .ifPresent(task -> {
+                    task.updateFrom(toUpdate);
+                    repository.save(task);
+                });
+        return ResponseEntity.noContent().build();
+    }
+
     @PatchMapping("/tasks/{id}")
     ResponseEntity<?> toggleTask(@PathVariable int id) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
         repository.findById(id)
-        .ifPresent(task -> task.setDone(!task.isDone()));
+        .ifPresent(task -> {
+            task.setDone(!task.isDone());
+        });
         return ResponseEntity.noContent().build();
     }
 }
