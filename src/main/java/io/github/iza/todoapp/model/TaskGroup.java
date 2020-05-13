@@ -12,12 +12,16 @@ public class TaskGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank(message = "Task group's description must be not null")
+    @NotBlank(message = "Task group's description must be not empty")
     private  String description;
     private boolean done;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
     private Set<Task> tasks;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     public TaskGroup() {
     }
