@@ -25,6 +25,11 @@ public class Task {
     public Task() {
     }
 
+    public Task(String description, LocalDateTime deadLine) {
+        this.description = description;
+        this.deadline = deadLine;
+    }
+
     public int getId() {
         return id;
     }
