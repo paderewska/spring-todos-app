@@ -6,18 +6,23 @@ import io.github.iza.todoapp.model.TaskGroupRepository;
 import io.github.iza.todoapp.model.TaskRepository;
 import io.github.iza.todoapp.model.projection.GroupReadModel;
 import io.github.iza.todoapp.model.projection.GroupWriteModel;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequestScope
 public class TaskGroupService {
 
     private TaskGroupRepository repository;
     private TaskRepository taskRepository;
 
-    public TaskGroupService(TaskGroupRepository repository, TaskConfigurationProperties config, TaskRepository taskRepository) {
+    public TaskGroupService(TaskGroupRepository repository, TaskRepository taskRepository) {
         this.repository = repository;
         this.taskRepository = taskRepository;
     }
