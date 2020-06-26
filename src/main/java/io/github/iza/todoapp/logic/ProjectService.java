@@ -3,7 +3,6 @@ package io.github.iza.todoapp.logic;
 import io.github.iza.todoapp.TaskConfigurationProperties;
 import io.github.iza.todoapp.model.*;
 import io.github.iza.todoapp.model.projection.GroupReadModel;
-import io.github.iza.todoapp.model.projection.GroupWriteModel;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,13 +15,11 @@ public class ProjectService {
     private ProjectRepository projectRepository;
     private TaskGroupRepository taskGroupRepository;
     private TaskConfigurationProperties myProp;
-    private TaskGroupService taskGroupService;
 
-    public ProjectService(ProjectRepository projectRepository, TaskGroupRepository taskGroupRepository, TaskConfigurationProperties myProp, TaskGroupService taskGroupService) {
+    public ProjectService(final ProjectRepository projectRepository, final TaskGroupRepository taskGroupRepository, final TaskConfigurationProperties myProp) {
         this.projectRepository = projectRepository;
         this.taskGroupRepository = taskGroupRepository;
         this.myProp = myProp;
-        this.taskGroupService = taskGroupService;
     }
 
     public List<Project> readAll() {
