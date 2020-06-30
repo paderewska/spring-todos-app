@@ -21,8 +21,8 @@ class ProjectServiceTest {
     @DisplayName("should throw IllegalStateException when configured to allow just 1 group and the other undone group exists")
     void createGroup_noMultipleGroupsConfig_And_undoneGroupExists_throwsIllegalStateException() {
         //given
-        var mockGroupRepository = mock(TaskGroupRepository.class);
-        when(mockGroupRepository.existsByDoneIsFalseAndProject_Id(anyInt())).thenReturn(true);
+        TaskGroupRepository mockGroupRepository = groupRepositoryReturning(true);
+        //and
         TaskConfigurationProperties mockTaskConfigurationProperties = configurationReturning(false);
         //system under test
         var toTest = new ProjectService(null, mockGroupRepository, mockTaskConfigurationProperties);
@@ -55,6 +55,35 @@ class ProjectServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("id not found");
     }
+
+    @Test
+    @DisplayName("should throw IllegalArgumentException when configure to allow just 1 group and no groups and projects for a given id")
+    void createGroup_noMultipleGroupsConfig_And_noUndoneGroupExists_noProjects_throwsIllegalArgumentException() {
+        //given
+        var mockRepository = mock(ProjectRepository.class);
+        when(mockRepository.findById(anyInt())).thenReturn(Optional.empty());
+        //and
+        groupRepositoryReturning(false);
+        //and
+        TaskConfigurationProperties mockTaskConfigurationProperties = configurationReturning(true);
+        //system under test
+        var toTest = new ProjectService(mockRepository, null, mockTaskConfigurationProperties);
+
+        //when
+        var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
+
+        //then
+        assertThat(exception)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("id not found");
+    }
+
+    private TaskGroupRepository groupRepositoryReturning(final boolean result) {
+        var mockGroupRepository = mock(TaskGroupRepository.class);
+        when(mockGroupRepository.existsByDoneIsFalseAndProject_Id(anyInt())).thenReturn(result);
+        return mockGroupRepository;
+    }
+
 
     private TaskConfigurationProperties configurationReturning(final boolean result) {
         var mockTemplate = mock(TaskConfigurationProperties.Template.class);
