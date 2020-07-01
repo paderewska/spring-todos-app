@@ -9,7 +9,7 @@ public interface TaskGroupRepository {
 
     Optional<TaskGroup> findById(Integer id);
 
-    TaskGroup save(TaskGroup entity);
+    TaskGroup save(TaskGroup entity) throws NoSuchFieldException;
 
     boolean existsByDoneIsFalseAndProject_Id(Integer id);
 }
