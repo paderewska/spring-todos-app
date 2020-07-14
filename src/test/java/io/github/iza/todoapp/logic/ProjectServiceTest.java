@@ -28,10 +28,8 @@ class ProjectServiceTest {
         TaskConfigurationProperties mockTaskConfigurationProperties = configurationReturning(false);
         //system under test
         var toTest = new ProjectService(null, mockGroupRepository, mockTaskConfigurationProperties);
-
         //when
         var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
-
         //then
         assertThat(exception)
                 .isInstanceOf(IllegalStateException.class)
@@ -48,10 +46,8 @@ class ProjectServiceTest {
         TaskConfigurationProperties mockTaskConfigurationProperties = configurationReturning(true);
         //system under test
         var toTest = new ProjectService(mockRepository, null, mockTaskConfigurationProperties);
-
         //when
         var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
-
         //then
         assertThat(exception)
                 .isInstanceOf(IllegalArgumentException.class)
